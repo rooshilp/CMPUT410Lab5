@@ -1,0 +1,68 @@
+<!docytpe html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>CMPUT 410 - Jinja2 Lab</title>
+	<link rel=stylesheet type=text/css href="{{url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+	<div class="page">
+		<h1>TODO List</h1>
+			<div class="metanav">
+			{% if not session.logged_in %}
+				<a href="{{ url_for('login') }}">Log in</a>
+			{% else %}
+				<a href="{{ url_for('logout') }}">Log out</a>
+			{% endif %}
+			</div>
+			{% for message in get_flashed_messages() %}
+				<div class="flash">{{ message }}</div>
+			{% endfor %}
+
+		{% if session.logged_in %}
+			<form action="{{ url_for('task') }}" method=post>
+				<dl>
+					<p>Category <input type=text name=category></p>
+					<p>Priority <input type=number name=priority></p>
+					<p>Description <input type=text name=description></p>
+				</dl>
+			</form>
+		{% endif %}
+		<table>
+			<colgroup>
+				<col style="col_category">
+				<col style="col_priority">
+				<col style="col_decription">
+				<col style="col_id">
+				<col style="col_op">
+			</colgroup>
+			<tbody>
+			<tr>
+				<th>Category</th>
+                <th>Priority</th>
+                <th>Description</th>
+				<th>ID</th>
+				<th>Operation</th>
+			</tr>
+			{% for task in tasks %}
+				<tr>
+					<td>{{ task['category'] }}</td>
+					<td>{{ task['priority'] }}</td>
+					<td>{{ task['description'] }}</td>
+					<td>{{ task['id'] }}</td>
+					<td>
+					{% if session.logged_in %}
+					<form class="operation_form" actions="{{url_for('delete') }}" method=post>
+						<input type="hidden" name=id value="{{ task['id'] }}">
+						<input type=submit value=Delete>
+					</form>
+					{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>	
+</body>
+</html>s
