@@ -94,4 +94,3 @@ def task():
 if __name__ == '__main__':
     app.debug = True
     app.run()
-    app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
